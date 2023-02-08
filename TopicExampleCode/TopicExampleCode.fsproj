@@ -6,7 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs"/>
+        <Compile Include="FunctionalFoundations.fs" />
+        <None Include="FSharpBasics.fsx" />
+        <Compile Include="FunctionalProgramming.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.ML" Version="3.0.0-preview.22621.2" />
     </ItemGroup>
 
 </Project>

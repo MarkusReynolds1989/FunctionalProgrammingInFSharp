@@ -1,2 +1,2 @@
 # FunctionalProgrammingInFSharp
-Repo for an upcoming O'Reilly course
+Repo for an upcoming Pearson published course.

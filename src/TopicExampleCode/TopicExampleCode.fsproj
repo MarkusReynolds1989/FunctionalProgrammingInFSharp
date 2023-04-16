@@ -9,6 +9,7 @@
         <Compile Include="FunctionalFoundations.fs" />
         <None Include="FSharpBasics.fsx" />
         <Compile Include="FunctionalProgramming.fs" />
+        <Compile Include="Collections.fs" />
     </ItemGroup>
 
     <ItemGroup>

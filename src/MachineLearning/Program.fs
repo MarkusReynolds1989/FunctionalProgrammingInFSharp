@@ -14,7 +14,13 @@ module Main =
           Name: string }
 
     [<CLIMutable>]
-    type Transaction = { TransactionID: int; ProductID: int }
+    type Transaction =
+        { [<LoadColumn(0); KeyType(count = 11UL)>]
+          TransactionID: uint32
+          [<LoadColumn(1); KeyType(count = 11UL)>]
+          ProductID: uint32
+          [<NoColumn>]
+          Label: float32 }
 
     [<CLIMutable>]
     type Prediction = { Score: float32 }
@@ -29,8 +35,9 @@ module Main =
 
         let trainData =
             let columns =
-                [| TextLoader.Column("TransactionID", DataKind.Int64, source = [| TextLoader.Range(0) |])
-                   TextLoader.Column("ProductID", DataKind.Int64, source = [| TextLoader.Range(1) |]) |]
+                [| TextLoader.Column("Label", DataKind.Single, 0)
+                   TextLoader.Column("TransactionID", DataKind.UInt32, source = [| TextLoader.Range(0) |])
+                   TextLoader.Column("ProductID", DataKind.UInt32, source = [| TextLoader.Range(1) |]) |]
 
             mlContext.Data.LoadFromTextFile(path, columns, hasHeader = true, separatorChar = '\t')
 
@@ -50,8 +57,12 @@ module Main =
         let predictionEngine =
             mlContext.Model.CreatePredictionEngine<Transaction, Prediction>(model)
 
-        let prediction = predictionEngine.Predict { TransactionID = 1; ProductID = 2 }
+        let prediction =
+            predictionEngine.Predict
+                { TransactionID = 3u
+                  ProductID = 23u
+                  Label = 0.f }
 
         printfn "%f" prediction.Score
-        
+
         0

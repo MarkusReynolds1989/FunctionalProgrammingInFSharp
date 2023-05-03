@@ -29,7 +29,7 @@ module Main =
     let main args =
 
         let path =
-            @"C:\Users\marku\home\code\F#\FunctionalProgrammingInFSharp\MachineLearning\transaction_list.tsv"
+            @"C:\Users\marku\home\code\F#\FunctionalProgrammingInFSharp\src\MachineLearning\transaction_list.tsv"
 
         let mlContext = MLContext()
 

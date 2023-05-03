@@ -30,7 +30,7 @@ module Basics =
     // The "with" keyword allows us to update records. Records are what we will use to bundle up our types similar to
     // what a class might do.
     // But in contrast, a record is just data.
-    let tom = { tom with age = 26 }
+    let tomf = { tom with age = 26 }
 
 
 module ExampleCollections =

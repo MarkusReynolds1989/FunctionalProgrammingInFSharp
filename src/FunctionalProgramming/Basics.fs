@@ -36,14 +36,25 @@ module BuiltInFunctions =
     // This works but it is very deeply nested, I will show you how to avoid this in the next section.
     let finalResult =
         (Seq.reduce (+) (Seq.map (fun (x: int) -> x + 1) (Seq.filter (fun (x: int) -> x > 1) [ 1; 2; 3; 4 ])))
-    
+
 
 
 module Piping =
-    ()
+    // This avoids the deeply nested function calls.
+    // Now it's a chain, we chain one function to the next.
+    // This is known as applicative programming or point free programming.
+    let result =
+        [ 1; 2; 3; 4 ]
+        |> Seq.filter (fun x -> x > 1)
+        |> Seq.map (fun x -> x + 1)
+        |> Seq.reduce (+)
 
 module Closures =
-    ()
-
+    // Show how we call anonymous functions on data.
+    let data = "Test"
+    "Test" |> 
 module ReturningFunctions =
+    // I have a DU of items and I need to determine which function to call, so I build a helper
+    // function that returns a function and maybe even data depending on
+    // which branch gets hit.
     ()

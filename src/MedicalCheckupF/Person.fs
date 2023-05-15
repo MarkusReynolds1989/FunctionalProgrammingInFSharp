@@ -9,14 +9,6 @@ module PersonInformation =
           Ldl: int
           Hdl: int }
 
-    let createPerson id name height weight ldl hdl =
-        { Id = id
-          Name = name
-          Height = height
-          Weight = weight
-          Ldl = ldl
-          Hdl = hdl }
-
     let getBmi (person: Person) : float = person.Weight / person.Height ** 2
-
     let getTotalCholesterol (person: Person) : int = person.Hdl + person.Ldl
+    let setWeight (person: Person) (weight: double) : Person = { person with Weight = weight }

@@ -7,10 +7,10 @@ public class Person
     private string Name { init; get; }
 
     // In Meters.
-    private double Height { init; get; }
+    private double Height { get; }
 
     // In KG.
-    private double Weight { init; get; }
+    private double Weight { get; set; }
     private int Ldl { init; get; }
     private int Hdl { init; get; }
 
@@ -31,4 +31,10 @@ public class Person
 
     public double GetBmi() => Weight / Math.Pow(Height, 2);
     public double GetTotalCholesterol() => Hdl + Ldl;
+    
+    // Mutation is allowed, but it is encapsulated.
+    public void SetWeight(double weight)
+    {
+        Weight = weight;
+    }
 }

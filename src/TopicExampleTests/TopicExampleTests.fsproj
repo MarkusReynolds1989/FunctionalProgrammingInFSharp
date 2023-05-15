@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\MedicalCheckupFuncCS\MedicalCheckupFuncCS.csproj" />
       <ProjectReference Include="..\MedicalCheckupF\MedicalCheckupF.fsproj" />
       <ProjectReference Include="..\MedicalCheckupImperative\MedicalCheckupImperative.csproj" />
       <ProjectReference Include="..\MedicalCheckup\MedicalCheckup.csproj" />

@@ -49,12 +49,69 @@ module Piping =
         |> Seq.map (fun x -> x + 1)
         |> Seq.reduce (+)
 
+    // You can chain anywhere where you would put data into a function, but the data will always be the last arg
+    // into that function.
+    let lower = "One" |> (fun x -> x.ToLower())
+// We pipe the string "One" into the closure of (fun x ->. The x represents the data we are sending into the
+// closure.
+
 module Closures =
-    // Show how we call anonymous functions on data.
-    let data = "Test"
-    "Test" |> 
+    // When we pipe the string "one" into this anonymous function, it closes around it.
+    let lower = "One" |> (fun x -> x.ToLower())
+
+    // We can close over some mutable state, in this case a string called name.
+    let person initial =
+        let name = ref initial
+
+        // Instead of private, we just don't export the function.
+        let lowerCaseName = name.Value |> (fun (x: string) -> x.ToLower())
+
+        let set newValue = name.Value <- newValue
+        let getName () = name.Value
+
+        // Then we can return the functions as a tuple.
+        (set, getName)
+
+    // This gives us the concept of encapsulation from OOP, now we can enforce how someone can interact with our data.
+    // Encapsulation helps us to hide implementation details and the ability to modify data in a way we don't intend from
+    // the outside world.
+    let setTomsName, getTomsName = person "Tom"
+    printfn $"{getTomsName ()}"
+    setTomsName "tom"
+    printfn $"{getTomsName ()}"
+
 module ReturningFunctions =
-    // I have a DU of items and I need to determine which function to call, so I build a helper
-    // function that returns a function and maybe even data depending on
-    // which branch gets hit.
-    ()
+    // We saw above how closures can enable us to encapsulate data, and in that case we passed functions back
+    // that operated on some internal bits of mutable data.
+    // We can use functions anywhere we could use a variable or an object, they are "first class" in F#.
+    // This is also true of C#, where there is a concept of "delegates" that enable you to pass functions around
+    // as data.
+    let adder x y = x + y
+
+    // In this case, we can create a function that takes another function.
+    // The "fn" argument is a slot for a function we can call on numOne and numTwo below.
+    let calculator fn numOne numTwo = fn numOne numTwo
+
+    // This will add 1 and 2 together.
+    let result = calculator adder 1 2
+
+    // This isn't the most interesting example, but it's the basis for some more interesting things we can do
+    // such as currying.
+    let multiplier x y = x * y
+    let divider x y = x / y
+    let subtracter x y = x - y
+
+    // Because functions are data we can add them to a list or a sequence or assign them to other variables.
+    let mathFunctions = [ adder; multiplier; divider; subtracter ]
+    // Then if we had some numbers we wanted to work on in sequence we could call those functions against
+    // a number list.
+    let resolveEquations numOne numTwo mathFunctions =
+        mathFunctions |> List.map (fun mathFunction -> mathFunction numOne numTwo)
+
+    // As we can see, we can plug in functions and lists of functions where ever we want.
+    // Functions can return other functions as well.
+    let results =
+        [ (1, 2); (3, 4); (5, 6); (7, 8) ]
+        |> List.map (fun (numbers: int * int) ->
+            let num1, num2 = numbers
+            resolveEquations num1 num2 mathFunctions)

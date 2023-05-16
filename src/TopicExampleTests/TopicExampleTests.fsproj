@@ -26,6 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\AdvancedFunctionalProgramming\AdvancedFunctionalProgramming.fsproj" />
+      <ProjectReference Include="..\FunctionalProgramming\FunctionalProgramming.fsproj" />
       <ProjectReference Include="..\MedicalCheckupFuncCS\MedicalCheckupFuncCS.csproj" />
       <ProjectReference Include="..\MedicalCheckupF\MedicalCheckupF.fsproj" />
       <ProjectReference Include="..\MedicalCheckupImperative\MedicalCheckupImperative.csproj" />

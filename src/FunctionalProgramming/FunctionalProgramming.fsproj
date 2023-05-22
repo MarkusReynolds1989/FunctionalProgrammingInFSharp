@@ -9,6 +9,12 @@
         <Compile Include="ImportClean.fs" />
         <Compile Include="Basics.fs" />
         <None Include="test.fsx" />
+        <Content Include="config.json" />
+        <Content Include="config.xml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MedicalCheckupF\MedicalCheckupF.fsproj" />
     </ItemGroup>
 
 </Project>

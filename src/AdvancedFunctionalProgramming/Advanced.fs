@@ -1,6 +1,8 @@
 ﻿namespace AdvancedFunctionalProgramming
 
 open System
+open System.Text.Json
+open System.Xml
 
 module Recursion =
     // Can't use this for the most part in C# because you will run out of stack space.
@@ -118,3 +120,72 @@ module RecursiveDataTypes =
     let linkedListCount = countLinkedList linkedBig
 
 // Try to experiment on your own to create a tree.
+
+module Currying =
+    // In F#, every function only takes one parameter.
+    // When you see a function that takes more than one parameter it is being broken down internally
+    // into more functions with each function taking it's own parameter.
+
+    /// This is a function that takes one parameter but there is another function
+    /// we don't see that takes another parameter inside.
+    let add x y = x + y
+
+    let addCur x =
+        let subAdd y = x + y
+        subAdd
+
+    // These two functions are equivalent.
+    let y = add 1 2
+    let x = addCur 2 3
+
+// Because of this, we can compose functions like we might compose data.
+
+module PartialApplication =
+    // Partial application is a continuation on the idea that we can compose functions.
+    // Because every function takes only one argument we can compose them up.
+
+    // Supposed we want to be able to read the config file we made earlier both if it's xml and if it's json.
+    type Config =
+        { GetBmi: bool
+          GetTotalCholesterol: bool
+          GetRiskScore: bool
+          RiskThreshold: float }
+
+    let readConfig configReader config =
+        printfn "The reason you would do this is so you can have data that is shared."
+        // This is like using interfaces or abstract classes in OOP languages.
+        configReader config
+
+    let jsonReader (config: string) =
+        let configDoc = JsonDocument.Parse(config)
+        let root = configDoc.RootElement
+        let getBmi = root.GetProperty("getBmi").GetBoolean()
+        let getTotalCholesterol = root.GetProperty("getTotalCholesterol").GetBoolean()
+        let getRiskScore = root.GetProperty("getRiskScore").GetBoolean()
+        let riskThreshold = root.GetProperty("riskThreshold").GetDouble()
+
+        { GetBmi = getBmi
+          GetTotalCholesterol = getTotalCholesterol
+          GetRiskScore = getRiskScore
+          RiskThreshold = riskThreshold }
+
+    let jsonConfigReader = readConfig jsonReader
+
+    let xmlReader (config: string) =
+        let configDoc = XmlDocument()
+        configDoc.LoadXml(config)
+        let root = configDoc.DocumentElement
+        let getBmi = bool.Parse(root.SelectSingleNode("getBmi").Value)
+
+        let getTotalCholesterol =
+            bool.Parse(root.SelectSingleNode("getTotalCholesterol").Value)
+
+        let getRiskScore = bool.Parse(root.SelectSingleNode("getRiskScore").Value)
+        let riskThreshold = Double.Parse(root.SelectSingleNode("riskThreshold").Value)
+
+        { GetBmi = getBmi
+          GetTotalCholesterol = getTotalCholesterol
+          GetRiskScore = getRiskScore
+          RiskThreshold = riskThreshold }
+
+    let xmlConfigReader = readConfig xmlReader

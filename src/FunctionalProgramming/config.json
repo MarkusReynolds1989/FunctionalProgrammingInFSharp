@@ -1,0 +1,6 @@
+{
+  "getBmi": true,
+  "getTotalCholesterol": true,
+  "getRiskScore": true,
+  "riskThreshold": 100.0
+}

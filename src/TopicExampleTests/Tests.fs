@@ -1,17 +1,18 @@
 module Tests
 
 open AdvancedFunctionalProgramming.RecursiveDataTypes
+open FunctionalProgramming
 open Xunit
 open MedicalCheckupF.PersonInformation
 open MedicalCheckupImperative
 open MedicalCheckup
-open FunctionalProgramming
 
 [<Fact>]
 let ``Person BMI Test`` () =
     let person =
         { Id = 0
           Name = "Tom"
+          Age = 23
           Height = 1.83
           Weight = 80.0
           Ldl = 10
@@ -62,3 +63,35 @@ let ``Seq Count Test`` () =
         )
 
     Assert.Equal(4, count sequence)
+
+[<Fact>]
+let ``People import test`` () =
+    Assert.NotEmpty(HealthData.patients HealthData.healthDataLines)
+
+[<Fact>]
+let ``All People Functions Return the Same`` () =
+    Assert.Equivalent(
+        HealthData.patients HealthData.healthDataLines,
+        HealthData.patientsRecursive (HealthData.healthDataLines |> Seq.toList)
+        |> List.toSeq
+    )
+
+    Assert.Equivalent(
+        HealthData.patients HealthData.healthDataLines,
+        HealthData.patientsApplicative HealthData.healthDataLines
+    )
+
+[<Fact>]
+let ``Apply Business Rules Works`` () =
+    let data = HealthData.patients HealthData.healthDataLines
+    let rules = HealthData.businessRules HealthData.configBusinessRules
+    let results = HealthData.applyAllBusinessRules rules data
+    Assert.NotEmpty results
+
+[<Fact>]
+let ``Filter High Risk `` () =
+    let data = HealthData.patients HealthData.healthDataLines
+    let rules = HealthData.businessRules HealthData.configBusinessRules
+    let results = HealthData.applyAllBusinessRules rules data
+    let highRisk = HealthData.filterHighRisk HealthData.configBusinessRules results
+    Assert.Equivalent(19, Seq.length highRisk)

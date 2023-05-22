@@ -1,4 +1,4 @@
-TransactionID   ProductID
+ProductID	OtherProductID
 1	1
 1	24
 1	15
